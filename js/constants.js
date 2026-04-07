@@ -36,6 +36,11 @@ export const COLORS = {
     TICKER_TEXT: '#FFEC27',
     WAVE_BANNER: '#FF004D',
     COMBO_TEXT: '#FFEC27',
+
+    // Era-specific color palettes (additive — used for era theming)
+    ERA_1920S: { BG: '#2B1B0E', ACCENT: '#D4A55C', TEXT: '#E8D5B7', DUST: '#8B7355' },
+    ERA_1970S: { BG: '#3D2B1F', ACCENT: '#DAA520', TEXT: '#F5DEB3', OLIVE: '#6B8E23', ORANGE: '#FF8C00' },
+    ERA_2020S: { BG: '#0D1117', ACCENT: '#00E436', TEXT: '#E6EDF3', DIGITAL: '#58A6FF', STIMULUS: '#3FB950' },
 };
 
 export const GAME = {

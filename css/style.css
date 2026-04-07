@@ -4,6 +4,19 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+:root {
+    --bg-dark: #000000;
+    --text-primary: #FFF1E8;
+    --text-glow: #FFEC27;
+    --accent: #FF004D;
+    --surface: #1D2B53;
+    --accent-shadow: #7E2553;
+    --text-warm: #FFA300;
+    --text-link: #29ADFF;
+    --text-muted: #C2C3C7;
+    --text-dim: #5F574F;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +24,7 @@
 }
 
 body {
-    background: #000;
+    background: var(--bg-dark);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,7 +74,7 @@ body {
     align-items: center;
     background: rgba(0, 0, 0, 0.85);
     z-index: 10;
-    color: #FFF1E8;
+    color: var(--text-primary);
 }
 
 .screen.hidden {
@@ -70,8 +83,8 @@ body {
 
 #title-screen h1 {
     font-size: 28px;
-    color: #FF004D;
-    text-shadow: 3px 3px 0 #7E2553;
+    color: var(--accent);
+    text-shadow: 3px 3px 0 var(--accent-shadow);
     margin-bottom: 8px;
     text-align: center;
     line-height: 1.4;
@@ -79,13 +92,13 @@ body {
 
 #title-screen .subtitle {
     font-size: 10px;
-    color: #FFA300;
+    color: var(--text-warm);
     margin-bottom: 40px;
 }
 
 .menu-item {
     font-size: 12px;
-    color: #FFF1E8;
+    color: var(--text-primary);
     margin: 8px 0;
     cursor: pointer;
     pointer-events: all;
@@ -94,12 +107,12 @@ body {
 }
 
 .menu-item:hover, .menu-item.selected {
-    color: #FFEC27;
+    color: var(--text-glow);
 }
 
 .start-prompt {
     font-size: 10px;
-    color: #29ADFF;
+    color: var(--text-link);
     margin-top: 40px;
     animation: blink 1s step-end infinite;
 }
@@ -129,16 +142,16 @@ body {
     line-height: 2;
     text-align: left;
     margin: 16px 0;
-    color: #C2C3C7;
+    color: var(--text-muted);
 }
 
 .score-breakdown .value {
-    color: #FFF1E8;
+    color: var(--text-primary);
 }
 
 .final-score {
     font-size: 16px;
-    color: #FFEC27;
+    color: var(--text-glow);
     margin: 12px 0;
 }
 
@@ -155,26 +168,26 @@ body {
 /* Controls help */
 .controls-help {
     font-size: 7px;
-    color: #5F574F;
+    color: var(--text-dim);
     margin-top: 24px;
     line-height: 2.2;
     text-align: center;
 }
 
 .controls-help span {
-    color: #C2C3C7;
+    color: var(--text-muted);
 }
 
 /* High scores */
 .high-scores {
     font-size: 8px;
     margin-top: 20px;
-    color: #C2C3C7;
+    color: var(--text-muted);
 }
 
 .high-scores h3 {
     font-size: 10px;
-    color: #FFA300;
+    color: var(--text-warm);
     margin-bottom: 8px;
 }
 
