@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inflation Race</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Title Screen -->
+        <div id="title-screen" class="screen">
+            <h1>INFLATION<br>RACE</h1>
+            <div class="subtitle">Your money is on fire. Shovel faster.</div>
+            <div class="start-prompt">PRESS SPACE TO START</div>
+            <div class="controls-help">
+                <span>MOVE</span> A / D<br>
+                <span>SHOVEL LEFT</span> Left Arrow / J<br>
+                <span>SHOVEL RIGHT</span> Right Arrow / K<br>
+                <span>SHOVEL (facing)</span> Space<br>
+                <span>INVEST</span> Up Arrow / W &nbsp;(when golden pile appears)<br>
+                <span>FIREBREAK</span> Down Arrow / S<br>
+                <span>PAUSE</span> Escape
+            </div>
+            <div class="high-scores" id="high-scores-display"></div>
+        </div>
+
+        <!-- Pause Screen -->
+        <div id="pause-screen" class="screen hidden">
+            <h2>PAUSED</h2>
+            <div class="start-prompt">PRESS ESCAPE TO RESUME</div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="screen hidden">
+            <h2>TIME'S UP</h2>
+            <div class="grade-display" id="grade-display">B</div>
+            <div class="final-score" id="final-score">$8,432</div>
+            <div class="score-breakdown" id="score-breakdown"></div>
+            <div class="start-prompt">PRESS SPACE TO PLAY AGAIN</div>
+        </div>
+
+        <!-- HUD (shown during gameplay) -->
+        <div id="hud"></div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
