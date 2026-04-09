@@ -36,6 +36,9 @@ export const COLORS = {
     TICKER_TEXT: '#FFEC27',
     WAVE_BANNER: '#FF004D',
     COMBO_TEXT: '#FFEC27',
+    PLATINUM: '#E0E0FF',
+    UI_DIM: '#333333',
+    FLASH_WHITE: '#FFFFFF',
 
     // Era-specific color palettes (additive — used for era theming)
     ERA_1920S: { BG: '#2B1B0E', ACCENT: '#D4A55C', TEXT: '#E8D5B7', DUST: '#8B7355' },
@@ -175,11 +178,11 @@ export const SCORING = {
     ASH_COLLECTOR: 100,         // per ash collected
     NO_COLLAPSE_BONUS: 1000,
     GRADES: [
-        { grade: 'S', threshold: 0.80, color: '#FFEC27' },
-        { grade: 'A', threshold: 0.60, color: '#00E436' },
-        { grade: 'B', threshold: 0.40, color: '#29ADFF' },
-        { grade: 'C', threshold: 0.20, color: '#FFA300' },
-        { grade: 'F', threshold: 0.00, color: '#FF004D' },
+        { grade: 'S', threshold: 0.80, color: COLORS.FIRE_LOW },
+        { grade: 'A', threshold: 0.60, color: COLORS.MONEY_GREEN },
+        { grade: 'B', threshold: 0.40, color: COLORS.FIREBREAK_BLUE },
+        { grade: 'C', threshold: 0.20, color: COLORS.FIRE_MED },
+        { grade: 'F', threshold: 0.00, color: COLORS.FIRE_HIGH },
     ],
 };
 

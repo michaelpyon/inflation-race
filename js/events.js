@@ -2,7 +2,7 @@
 // events.js - Wave system, market events, and ticker
 // ============================================================
 
-import { GAME, MARKET_CRASH, TICKER, WAVE_MULTIPLIERS } from './constants.js';
+import { GAME, MARKET_CRASH, TICKER, WAVE_MULTIPLIERS, COLORS } from './constants.js';
 
 export class EventManager {
     constructor() {
@@ -113,7 +113,7 @@ export class EventManager {
             this.safeHavenIndex = validPiles[Math.floor(Math.random() * validPiles.length)].index;
         }
 
-        this.addTickerMessage('!!! MARKET CRASH INCOMING !!!', '#FF004D');
+        this.addTickerMessage('!!! MARKET CRASH INCOMING !!!', COLORS.FIRE_HIGH);
 
         if (callbacks.onCrashWarning) callbacks.onCrashWarning(this.safeHavenIndex);
     }
@@ -124,7 +124,7 @@ export class EventManager {
         this.crashTriggered = true;
         this.crashTimer = MARKET_CRASH.CRASH_DURATION;
 
-        this.addTickerMessage('MARKET CRASH! BURN RATES TRIPLED!', '#FF004D');
+        this.addTickerMessage('MARKET CRASH! BURN RATES TRIPLED!', COLORS.FIRE_HIGH);
 
         if (callbacks.onCrashStart) callbacks.onCrashStart(this.safeHavenIndex);
     }
@@ -133,7 +133,7 @@ export class EventManager {
         this.crashActive = false;
         this.safeHavenIndex = -1;
 
-        this.addTickerMessage('Market crash subsiding...', '#FFEC27');
+        this.addTickerMessage('Market crash subsiding...', COLORS.TICKER_TEXT);
 
         if (callbacks.onCrashEnd) callbacks.onCrashEnd();
     }
@@ -143,19 +143,19 @@ export class EventManager {
         const prevMult = WAVE_MULTIPLIERS[Math.max(0, this.waveIndex - 1)];
         const increase = Math.round((waveMult / prevMult - 1) * 100);
 
-        this.addTickerMessage(`WAVE ${this.waveIndex + 1} - ALL RATES +${increase}%`, '#FFA300');
+        this.addTickerMessage(`WAVE ${this.waveIndex + 1} - ALL RATES +${increase}%`, COLORS.FIRE_MED);
 
         // Add specific pile warnings
         for (const pile of piles) {
             if (pile.collapsed) continue;
             const newRate = pile.baseBurnRate * waveMult;
             if (newRate > 15) {
-                this.addTickerMessage(`${pile.name.toUpperCase()} burning hot!`, '#FF004D');
+                this.addTickerMessage(`${pile.name.toUpperCase()} burning hot!`, COLORS.FIRE_HIGH);
             }
         }
     }
 
-    addTickerMessage(text, color = '#FFEC27') {
+    addTickerMessage(text, color = COLORS.TICKER_TEXT) {
         this.tickerMessages.push({
             text,
             color,
@@ -172,7 +172,7 @@ export class EventManager {
             'spike': `${pileName} BURN RATE DOUBLING`,
             'cool': `${pileName} entering cool period`,
         };
-        this.addTickerMessage(messages[changeType] || `${pileName} changing`, '#FFEC27');
+        this.addTickerMessage(messages[changeType] || `${pileName} changing`, COLORS.TICKER_TEXT);
     }
 
     updateTicker(dt) {

@@ -2,7 +2,7 @@
 // game.js - Core game state manager
 // ============================================================
 
-import { GAME, EMBER, COLLAPSE, FIREBREAK, PILES, MARKET_CRASH, SCORING } from './constants.js';
+import { GAME, EMBER, COLLAPSE, FIREBREAK, PILES, MARKET_CRASH, SCORING, COLORS } from './constants.js';
 import { Pile, createPiles } from './pile.js';
 import { Player } from './player.js';
 import { InvestmentManager } from './investment.js';
@@ -133,7 +133,7 @@ export class Game {
                 this.onShovel(from, to, amount, delivered, spillage);
             },
             onCombo: (count) => {
-                this.renderer.addFloatingText('COMBO x' + count, this.player.x, PILES.PILE_Y - 30, '#FFEC27');
+                this.renderer.addFloatingText('COMBO x' + count, this.player.x, PILES.PILE_Y - 30, COLORS.COMBO_TEXT);
             },
             onInvest: (pileIndex) => {
                 this.onInvest(pileIndex);
@@ -232,9 +232,9 @@ export class Game {
         );
 
         // Floating text
-        this.renderer.addFloatingText('+$' + Math.floor(delivered), toPile.x, PILES.PILE_Y - toPile.visualHeight - 10, '#00E436');
+        this.renderer.addFloatingText('+$' + Math.floor(delivered), toPile.x, PILES.PILE_Y - toPile.visualHeight - 10, COLORS.MONEY_GREEN);
         if (spillage > 1) {
-            this.renderer.addFloatingText('-$' + Math.floor(spillage), (fromPile.x + toPile.x) / 2, PILES.PILE_Y - 20, '#FF004D', 0.5);
+            this.renderer.addFloatingText('-$' + Math.floor(spillage), (fromPile.x + toPile.x) / 2, PILES.PILE_Y - 20, COLORS.FIRE_HIGH, 0.5);
         }
     }
 
@@ -243,7 +243,7 @@ export class Game {
         if (invested) {
             this.stats.totalInvested += invested;
             Audio.playMoneyLand();
-            this.renderer.addFloatingText('-$' + Math.floor(invested), this.piles[pileIndex].x, PILES.PILE_Y - 25, '#FFCCAA');
+            this.renderer.addFloatingText('-$' + Math.floor(invested), this.piles[pileIndex].x, PILES.PILE_Y - 25, COLORS.INVESTMENT_GOLD);
         }
     }
 
@@ -255,9 +255,9 @@ export class Game {
             // Big dramatic result
             this.renderer.addFloatingText(
                 'BULL! +$' + Math.floor(investment.returnAmount),
-                pile.x, PILES.PILE_Y - pile.visualHeight - 25, '#00E436', 1.5
+                pile.x, PILES.PILE_Y - pile.visualHeight - 25, COLORS.MONEY_GREEN, 1.5
             );
-            this.renderer.flash('#00E436', 0.08);
+            this.renderer.flash(COLORS.MONEY_GREEN, 0.08);
             this.stats.bullResults++;
             this.stats.totalReturned += investment.returnAmount;
             this.particles.spawnInvestmentSparkle(pile.x, PILES.PILE_Y - pile.visualHeight - 10);
@@ -266,7 +266,7 @@ export class Game {
             const lost = investment.investedAmount - investment.returnAmount;
             this.renderer.addFloatingText(
                 'BEAR! -$' + Math.floor(lost),
-                pile.x, PILES.PILE_Y - pile.visualHeight - 25, '#FF004D', 1.5
+                pile.x, PILES.PILE_Y - pile.visualHeight - 25, COLORS.FIRE_HIGH, 1.5
             );
             this.renderer.shake(2, 0.3);
             this.stats.totalReturned += investment.returnAmount;
@@ -274,7 +274,7 @@ export class Game {
             Audio.playFlatResult();
             this.renderer.addFloatingText(
                 'FLAT $' + Math.floor(investment.returnAmount) + ' back',
-                pile.x, PILES.PILE_Y - pile.visualHeight - 25, '#C2C3C7', 1.2
+                pile.x, PILES.PILE_Y - pile.visualHeight - 25, COLORS.ASH_GRAY, 1.2
             );
             this.stats.totalReturned += investment.returnAmount;
         }
@@ -285,7 +285,7 @@ export class Game {
         pile.applyFirebreak(FIREBREAK.DURATION);
         Audio.playFirebreak();
         this.particles.spawnFirebreak(pile.x, PILES.PILE_Y, PILES.PILE_WIDTH);
-        this.renderer.addFloatingText('FIREBREAK', pile.x, PILES.PILE_Y - pile.visualHeight - 10, '#29ADFF');
+        this.renderer.addFloatingText('FIREBREAK', pile.x, PILES.PILE_Y - pile.visualHeight - 10, COLORS.FIREBREAK_BLUE);
     }
 
     onAshCollect(pileIndex, amount) {
@@ -297,7 +297,7 @@ export class Game {
         );
         if (neighbors.length > 0) {
             this.piles[neighbors[0]].addMoney(amount);
-            this.renderer.addFloatingText('+$' + amount, this.piles[neighbors[0]].x, PILES.PILE_Y - 15, '#C2C3C7');
+            this.renderer.addFloatingText('+$' + amount, this.piles[neighbors[0]].x, PILES.PILE_Y - 15, COLORS.ASH_GRAY);
         }
     }
 
@@ -305,10 +305,10 @@ export class Game {
         this.stats.pilesCollapsed++;
         Audio.playCollapse();
         this.renderer.shake(3, 0.5);
-        this.renderer.flash('#FF004D', 0.1);
+        this.renderer.flash(COLORS.FIRE_HIGH, 0.1);
         this.particles.spawnCollapse(pile.x, PILES.PILE_Y);
 
-        this.events.addTickerMessage(`${pile.name} COLLAPSED!`, '#FF004D');
+        this.events.addTickerMessage(`${pile.name} COLLAPSED!`, COLORS.FIRE_HIGH);
 
         // Apply spike to neighbors
         if (pile.index > 0 && !this.piles[pile.index - 1].collapsed) {
@@ -330,7 +330,7 @@ export class Game {
 
     onCrashStart(safeIdx) {
         this.renderer.shake(4, 0.8);
-        this.renderer.flash('#FFF', 0.08);
+        this.renderer.flash(COLORS.FLASH_WHITE, 0.08);
     }
 
     onCrashEnd() {

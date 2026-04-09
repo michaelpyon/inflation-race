@@ -28,7 +28,7 @@ export class Renderer {
 
         // Flash
         this.flashTimer = 0;
-        this.flashColor = '#FFF';
+        this.flashColor = COLORS.FLASH_WHITE;
 
         // Floating texts
         this.floatingTexts = [];
@@ -42,7 +42,7 @@ export class Renderer {
         this.shakeTimer = duration;
     }
 
-    flash(color = '#FFF', duration = 0.05) {
+    flash(color = COLORS.FLASH_WHITE, duration = 0.05) {
         this.flashColor = color;
         this.flashTimer = duration;
     }
@@ -204,14 +204,14 @@ export class Renderer {
         const w = PILES.PILE_WIDTH + 8;
 
         // Subtle glow behind current pile
-        ctx.fillStyle = '#FFF1E8';
+        ctx.fillStyle = COLORS.UI_TEXT;
         ctx.globalAlpha = 0.06;
         ctx.fillRect(x - w / 2, PILES.PILE_Y - 90, w, 92);
         ctx.globalAlpha = 1;
 
         // Small arrow below platform
         const arrowY = PILES.PILE_Y + 18;
-        ctx.fillStyle = '#FFF1E8';
+        ctx.fillStyle = COLORS.UI_TEXT;
         ctx.fillRect(x - 2, arrowY, 4, 2);
         ctx.fillRect(x - 1, arrowY - 1, 2, 1);
     }
@@ -326,7 +326,7 @@ export class Renderer {
         const color = pile.getBurnColor();
 
         // Background
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = COLORS.UI_BG;
         ctx.fillRect(x - 1, y - 1, barWidth + 2, barHeight + 2);
 
         // Fill based on burn rate
@@ -368,7 +368,7 @@ export class Renderer {
         if (pile.collapsed) return;
 
         // Name (below platform)
-        this.drawText(ctx, pile.name, pile.x, PILES.PILE_Y + 11, '#C2C3C7', 'center', 1);
+        this.drawText(ctx, pile.name, pile.x, PILES.PILE_Y + 11, COLORS.ASH_GRAY, 'center', 1);
 
         // Amount (below name)
         const amountStr = '$' + Math.floor(pile.amount).toLocaleString();
@@ -438,7 +438,7 @@ export class Renderer {
         const x = pile.x;
         const baseY = PILES.PILE_Y - pile.visualHeight - 24;
         const bobY = baseY + Math.sin(investment.bounceTimer * 4) * 2;
-        const color = investment.isPlatinum ? '#E0E0FF' : COLORS.INVESTMENT_GOLD;
+        const color = investment.isPlatinum ? COLORS.PLATINUM : COLORS.INVESTMENT_GOLD;
         const secs = Math.ceil(investment.timeRemaining);
 
         // Background panel for readability
@@ -454,9 +454,9 @@ export class Renderer {
 
         // Countdown bar across top
         const progress = investment.getProgress();
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = COLORS.UI_DIM;
         ctx.fillRect(panelX + 1, panelY + 1, panelW - 2, 2);
-        ctx.fillStyle = secs <= 2 ? '#FF004D' : color;
+        ctx.fillStyle = secs <= 2 ? COLORS.FIRE_HIGH : color;
         ctx.fillRect(panelX + 1, panelY + 1, Math.floor((panelW - 2) * (1 - progress)), 2);
 
         // Title + timer
@@ -472,13 +472,13 @@ export class Renderer {
                 let forecastLabel, forecastColor;
                 if (investment.forecastType === 'sun') {
                     forecastLabel = 'SUNNY';
-                    forecastColor = '#FFEC27';
+                    forecastColor = COLORS.FIRE_LOW;
                 } else if (investment.forecastType === 'cloud') {
                     forecastLabel = 'CLOUDY';
-                    forecastColor = '#C2C3C7';
+                    forecastColor = COLORS.ASH_GRAY;
                 } else {
                     forecastLabel = 'STORMY';
-                    forecastColor = '#FF004D';
+                    forecastColor = COLORS.FIRE_HIGH;
                 }
                 const flash = Math.sin(Date.now() / 150) > 0;
                 if (flash) {
@@ -487,7 +487,7 @@ export class Renderer {
             } else {
                 // Show potential return
                 const bullReturn = Math.floor(investment.investedAmount * (investment.isPlatinum ? 5 : 2));
-                this.drawText(ctx, 'Win: $' + bullReturn, x, panelY + 20, '#00E436', 'center', 1);
+                this.drawText(ctx, 'Win: $' + bullReturn, x, panelY + 20, COLORS.MONEY_GREEN, 'center', 1);
             }
 
             // Flash "Press W for more"
@@ -498,13 +498,13 @@ export class Renderer {
         } else {
             // Not yet invested - explain clearly
             if (investment.isPlatinum) {
-                this.drawText(ctx, 'Risk $200', x, panelY + 13, '#C2C3C7', 'center', 1);
-                this.drawText(ctx, 'Win: 5x', x, panelY + 20, '#00E436', 'center', 1);
-                this.drawText(ctx, 'Lose: all', x, panelY + 26, '#FF004D', 'center', 1);
+                this.drawText(ctx, 'Risk $200', x, panelY + 13, COLORS.ASH_GRAY, 'center', 1);
+                this.drawText(ctx, 'Win: 5x', x, panelY + 20, COLORS.MONEY_GREEN, 'center', 1);
+                this.drawText(ctx, 'Lose: all', x, panelY + 26, COLORS.FIRE_HIGH, 'center', 1);
             } else {
-                this.drawText(ctx, 'Risk $200', x, panelY + 13, '#C2C3C7', 'center', 1);
-                this.drawText(ctx, 'Win: 2x', x, panelY + 20, '#00E436', 'center', 1);
-                this.drawText(ctx, 'Lose: half', x, panelY + 26, '#FF004D', 'center', 1);
+                this.drawText(ctx, 'Risk $200', x, panelY + 13, COLORS.ASH_GRAY, 'center', 1);
+                this.drawText(ctx, 'Win: 2x', x, panelY + 20, COLORS.MONEY_GREEN, 'center', 1);
+                this.drawText(ctx, 'Lose: half', x, panelY + 26, COLORS.FIRE_HIGH, 'center', 1);
             }
 
             // Press W prompt
@@ -522,7 +522,7 @@ export class Renderer {
             ctx.fillStyle = COLORS.INVESTMENT_GLOW;
             ctx.fillRect(CANVAS.WIDTH / 2 - 90, tutY - 2, 180, 1);
             this.drawText(ctx, 'INVESTMENT appeared! Go to it', CANVAS.WIDTH / 2, tutY + 2, COLORS.INVESTMENT_GLOW, 'center', 1);
-            this.drawText(ctx, 'and press W to gamble $200', CANVAS.WIDTH / 2, tutY + 9, '#C2C3C7', 'center', 1);
+            this.drawText(ctx, 'and press W to gamble $200', CANVAS.WIDTH / 2, tutY + 9, COLORS.ASH_GRAY, 'center', 1);
         }
     }
 
@@ -545,7 +545,7 @@ export class Renderer {
         this.drawText(ctx, 'FB', CANVAS.WIDTH - 20, hudY, COLORS.FIREBREAK_BLUE, 'right', 1);
         const tokenX = CANVAS.WIDTH - 16;
         for (let i = 0; i < FIREBREAK.MAX_TOKENS; i++) {
-            ctx.fillStyle = i < player.firebreakTokens ? COLORS.FIREBREAK_BLUE : '#333';
+            ctx.fillStyle = i < player.firebreakTokens ? COLORS.FIREBREAK_BLUE : COLORS.UI_DIM;
             ctx.fillRect(tokenX + i * 6, hudY, 4, 5);
         }
 
@@ -553,7 +553,7 @@ export class Renderer {
         if (player.activeUpgrade) {
             const barWidth = 30;
             const upgradeY = hudY + 7;
-            ctx.fillStyle = '#000';
+            ctx.fillStyle = COLORS.UI_BG;
             ctx.fillRect(CANVAS.WIDTH / 2 - barWidth / 2, upgradeY, barWidth, 2);
             const fill = player.upgradeTimer / 15; // approximate
             ctx.fillStyle = COLORS.INVESTMENT_GOLD;
