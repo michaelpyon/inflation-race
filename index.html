@@ -10,11 +10,34 @@
     <div id="game-container">
         <canvas id="game-canvas"></canvas>
 
-        <!-- Title Screen -->
+        <!-- Title Screen / Era Selection -->
         <div id="title-screen" class="screen">
             <h1>INFLATION<br>RACE</h1>
-            <div class="subtitle">Your money is on fire. Shovel faster.</div>
-            <div class="start-prompt">PRESS SPACE TO START</div>
+            <div class="subtitle">Choose Your Economic Nightmare</div>
+
+            <div class="era-cards" id="era-cards">
+                <div class="era-card" data-era="great_depression">
+                    <div class="era-year">1929-1939</div>
+                    <div class="era-name">The Great Depression</div>
+                    <div class="era-hook">Deflation eats everything.</div>
+                    <div class="era-stats">Burn: x0.5 | Start: $500</div>
+                </div>
+                <div class="era-card" data-era="stagflation">
+                    <div class="era-year">1973-1982</div>
+                    <div class="era-name">Stagflation</div>
+                    <div class="era-hook">Prices rise. Wages don't.</div>
+                    <div class="era-stats">Burn: x1.5 | Start: $200</div>
+                </div>
+                <div class="era-card" data-era="helicopter_money">
+                    <div class="era-year">2020-2025</div>
+                    <div class="era-name">Helicopter Money</div>
+                    <div class="era-hook">Free money. Expensive everything.</div>
+                    <div class="era-stats">Burn: x2.0 | Start: $100</div>
+                </div>
+            </div>
+
+            <div class="era-random-btn" id="random-era-btn">RANDOM ERA</div>
+
             <div class="controls-help">
                 <span>MOVE</span> A / D<br>
                 <span>SHOVEL LEFT</span> Left Arrow / J<br>
@@ -35,11 +58,17 @@
 
         <!-- Game Over Screen -->
         <div id="gameover-screen" class="screen hidden">
+            <div class="gameover-era-name" id="gameover-era-name"></div>
             <h2>TIME'S UP</h2>
             <div class="grade-display" id="grade-display">B</div>
             <div class="final-score" id="final-score">$8,432</div>
+            <div class="purchasing-power" id="purchasing-power"></div>
             <div class="score-breakdown" id="score-breakdown"></div>
-            <div class="start-prompt">PRESS SPACE TO PLAY AGAIN</div>
+            <div class="gameover-era-stats" id="gameover-era-stats"></div>
+            <div class="gameover-buttons">
+                <div class="gameover-btn" id="btn-retry">RETRY</div>
+                <div class="gameover-btn" id="btn-try-another">TRY ANOTHER ERA</div>
+            </div>
         </div>
 
         <!-- HUD (shown during gameplay) -->

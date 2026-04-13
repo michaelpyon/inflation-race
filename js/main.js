@@ -9,6 +9,7 @@ import { initInput, updateInput } from './input.js';
 import * as Input from './input.js';
 import { initAudio, resumeAudio } from './audio.js';
 import { addHighScore, incrementGamesPlayed } from './storage.js';
+import { getEraById, getRandomEra, ERA_LIST } from './eras.js';
 
 // Screen states
 const STATES = {
@@ -24,6 +25,8 @@ let lastTime = 0;
 let accumulator = 0;
 const FIXED_DT = 1 / 60; // 60 fps fixed timestep
 
+let selectedEra = null;
+
 function init() {
     const canvas = document.getElementById('game-canvas');
     renderer = new Renderer(canvas);
@@ -31,9 +34,54 @@ function init() {
     initInput();
     initAudio();
 
+    // Set up era card click handlers
+    setupEraSelection();
+
     ui.showTitle();
 
     requestAnimationFrame(gameLoop);
+}
+
+function setupEraSelection() {
+    const eraCards = document.querySelectorAll('.era-card');
+    eraCards.forEach(card => {
+        card.addEventListener('click', () => {
+            resumeAudio();
+            const eraId = card.dataset.era;
+            const era = getEraById(eraId);
+            if (era) {
+                selectedEra = era;
+                startGame(era);
+            }
+        });
+    });
+
+    const randomBtn = document.getElementById('random-era-btn');
+    if (randomBtn) {
+        randomBtn.addEventListener('click', () => {
+            resumeAudio();
+            selectedEra = getRandomEra();
+            startGame(selectedEra);
+        });
+    }
+
+    // Game over buttons
+    const retryBtn = document.getElementById('btn-retry');
+    if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+            if (selectedEra) {
+                startGame(selectedEra);
+            }
+        });
+    }
+
+    const tryAnotherBtn = document.getElementById('btn-try-another');
+    if (tryAnotherBtn) {
+        tryAnotherBtn.addEventListener('click', () => {
+            state = STATES.TITLE;
+            ui.showTitle();
+        });
+    }
 }
 
 function gameLoop(timestamp) {
@@ -54,7 +102,7 @@ function gameLoop(timestamp) {
 
     switch (state) {
         case STATES.TITLE:
-            updateTitle();
+            // Title no longer uses keyboard confirm (uses click-based era selection)
             renderer.render(null);
             break;
 
@@ -85,21 +133,14 @@ function gameLoop(timestamp) {
             break;
 
         case STATES.GAMEOVER:
-            updateGameOver();
             renderer.render(game.getState());
             break;
     }
 }
 
-function updateTitle() {
-    if (Input.confirmAction()) {
-        startGame();
-    }
-}
-
-function startGame() {
+function startGame(era) {
     resumeAudio();
-    game = new Game(renderer);
+    game = new Game(renderer, era);
     game.start();
     state = STATES.PLAYING;
     ui.showGame();
@@ -124,16 +165,9 @@ function transitionToGameOver() {
     state = STATES.GAMEOVER;
     const scoreData = game.getScore();
     const grade = game.getGrade();
-    addHighScore(scoreData.total, grade.grade);
+    addHighScore(scoreData.total, grade.grade, scoreData.eraId);
     incrementGamesPlayed();
-    ui.showGameOver(scoreData, grade);
-}
-
-function updateGameOver() {
-    if (Input.confirmAction()) {
-        state = STATES.TITLE;
-        ui.showTitle();
-    }
+    ui.showGameOver(scoreData, grade, selectedEra);
 }
 
 // Start when DOM is ready

@@ -35,6 +35,10 @@ export class Player {
         this.activeUpgrade = null;
         this.upgradeTimer = 0;
 
+        // Era modifiers (set by game.js each frame)
+        this.speedMultiplier = 1.0;
+        this.shovelsLocked = false;
+
         // Stats
         this.totalShoveled = 0;
         this.totalSpillage = 0;
@@ -83,7 +87,7 @@ export class Player {
 
         // Update x position (interpolate toward target)
         const targetX = this.getPileX(this.pileIndex, piles);
-        const moveSpeed = PILES.PILE_SPACING * PLAYER.MOVE_SPEED;
+        const moveSpeed = PILES.PILE_SPACING * PLAYER.MOVE_SPEED * this.speedMultiplier;
         const dx = targetX - this.x;
         if (Math.abs(dx) < moveSpeed * dt) {
             this.x = targetX;
@@ -117,6 +121,7 @@ export class Player {
 
     handleShovel(piles, gameTime, callbacks) {
         if (this.shovelCooldown > 0) return;
+        if (this.shovelsLocked) return;
 
         const currentPile = piles[this.pileIndex];
         if (!currentPile || currentPile.collapsed) return;

@@ -196,6 +196,159 @@ body {
     margin: 4px 0;
 }
 
+/* Era Selection Cards */
+.era-cards {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.era-card {
+    width: 200px;
+    padding: 16px 12px;
+    border: 2px solid var(--text-dim);
+    background: rgba(29, 43, 83, 0.6);
+    cursor: pointer;
+    pointer-events: all;
+    text-align: center;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+
+.era-card:hover {
+    border-color: var(--text-glow);
+    background: rgba(29, 43, 83, 0.9);
+    transform: scale(1.04);
+}
+
+.era-card[data-era="great_depression"] { border-color: #D4A55C; }
+.era-card[data-era="great_depression"]:hover { background: rgba(43, 27, 14, 0.85); border-color: #E8D5B7; }
+
+.era-card[data-era="stagflation"] { border-color: #DAA520; }
+.era-card[data-era="stagflation"]:hover { background: rgba(61, 43, 31, 0.85); border-color: #FF8C00; }
+
+.era-card[data-era="helicopter_money"] { border-color: #00E436; }
+.era-card[data-era="helicopter_money"]:hover { background: rgba(13, 17, 23, 0.85); border-color: #58A6FF; }
+
+.era-year {
+    font-size: 7px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.era-name {
+    font-size: 10px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.era-hook {
+    font-size: 7px;
+    color: var(--text-warm);
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.era-stats {
+    font-size: 6px;
+    color: var(--text-dim);
+}
+
+.era-random-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--text-link);
+    cursor: pointer;
+    pointer-events: all;
+    padding: 8px 20px;
+    border: 1px solid var(--text-link);
+    margin-bottom: 12px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.era-random-btn:hover {
+    background: var(--text-link);
+    color: var(--bg-dark);
+}
+
+/* Game Over - Era info */
+.gameover-era-name {
+    font-size: 8px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.purchasing-power {
+    font-size: 8px;
+    color: var(--text-warm);
+    margin: 6px 0 4px;
+}
+
+.gameover-era-stats {
+    font-size: 7px;
+    color: var(--text-dim);
+    margin: 8px 0;
+    line-height: 2;
+}
+
+.gameover-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.gameover-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--text-link);
+    cursor: pointer;
+    pointer-events: all;
+    padding: 8px 16px;
+    border: 1px solid var(--text-link);
+    transition: background 0.15s, color 0.15s;
+}
+
+.gameover-btn:hover {
+    background: var(--text-link);
+    color: var(--bg-dark);
+}
+
+/* Era Event Banner */
+.era-event-banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.era-event-banner.visible {
+    opacity: 1;
+}
+
+.era-event-banner .event-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+    margin-bottom: 4px;
+}
+
+.era-event-banner .event-flavor {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--text-muted);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+}
+
 /* Responsive scaling */
 @media (max-width: 1536px) {
     #game-container {

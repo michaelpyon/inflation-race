@@ -81,8 +81,11 @@ export class Renderer {
     render(gameState) {
         const ctx = this.ctx;
 
-        // Clear
-        ctx.fillStyle = COLORS.BG;
+        // Clear - use era BG color if available
+        const bgColor = (gameState && gameState.era && gameState.era.colors)
+            ? gameState.era.colors.BG
+            : COLORS.BG;
+        ctx.fillStyle = bgColor;
         ctx.fillRect(0, 0, CANVAS.WIDTH, CANVAS.HEIGHT);
 
         if (!gameState) {
@@ -156,6 +159,19 @@ export class Renderer {
             this.drawCrashBorder(ctx);
         }
 
+        // Draw era event banner
+        if (events.activeEraEvent && events.eraEventBannerTimer > 0) {
+            this.drawEraEventBanner(ctx, events.activeEraEvent, gameState.era, events.eraEventBannerTimer);
+        }
+
+        // Draw era-specific status indicators
+        if (gameState.eraLockShovels && gameState.eraLockTimer > 0) {
+            this.drawEraLockIndicator(ctx, gameState.eraLockTimer);
+        }
+        if (gameState.eraImmunePileIndex >= 0 && gameState.eraImmunityTimer > 0) {
+            this.drawEraImmunityIndicator(ctx, piles, gameState.eraImmunePileIndex, gameState.eraImmunityTimer);
+        }
+
         // Draw flash
         if (this.flashTimer > 0) {
             ctx.globalAlpha = this.flashTimer * 10;
@@ -165,6 +181,49 @@ export class Renderer {
         }
 
         this.present();
+    }
+
+    drawEraEventBanner(ctx, event, era, timer) {
+        const alpha = Math.min(1, timer);
+        ctx.globalAlpha = alpha;
+
+        // Background bar
+        const bannerY = CANVAS.HEIGHT / 2 - 12;
+        const accentColor = era && era.colors ? era.colors.ACCENT : COLORS.WAVE_BANNER;
+        ctx.fillStyle = 'rgba(0,0,0,0.75)';
+        ctx.fillRect(0, bannerY - 2, CANVAS.WIDTH, 24);
+
+        // Accent line top + bottom
+        ctx.fillStyle = accentColor;
+        ctx.fillRect(0, bannerY - 2, CANVAS.WIDTH, 1);
+        ctx.fillRect(0, bannerY + 22, CANVAS.WIDTH, 1);
+
+        // Event name
+        this.drawText(ctx, event.name, CANVAS.WIDTH / 2, bannerY + 2, accentColor, 'center', 2);
+
+        // Event flavor text
+        const flavorText = event.text || event.flavor || '';
+        this.drawText(ctx, flavorText, CANVAS.WIDTH / 2, bannerY + 14, COLORS.UI_TEXT, 'center', 1);
+
+        ctx.globalAlpha = 1;
+    }
+
+    drawEraLockIndicator(ctx, timer) {
+        const flashOn = Math.floor(Date.now() / 300) % 2 === 0;
+        if (flashOn) {
+            this.drawText(ctx, 'SHOVELS LOCKED ' + Math.ceil(timer) + 's', CANVAS.WIDTH / 2, CANVAS.HEIGHT - 20, COLORS.FIRE_HIGH, 'center', 1);
+        }
+    }
+
+    drawEraImmunityIndicator(ctx, piles, pileIndex, timer) {
+        const pile = piles[pileIndex];
+        if (!pile || pile.collapsed) return;
+        // Gold glow around immune pile
+        ctx.fillStyle = COLORS.INVESTMENT_GOLD;
+        ctx.globalAlpha = 0.3 + Math.sin(Date.now() / 150) * 0.2;
+        ctx.fillRect(pile.x - PILES.PILE_WIDTH / 2 - 3, PILES.PILE_Y - pile.visualHeight - 3, PILES.PILE_WIDTH + 6, pile.visualHeight + 6);
+        ctx.globalAlpha = 1;
+        this.drawText(ctx, 'IMMUNE ' + Math.ceil(timer) + 's', pile.x, PILES.PILE_Y - pile.visualHeight - 12, COLORS.INVESTMENT_GOLD, 'center', 1);
     }
 
     present() {

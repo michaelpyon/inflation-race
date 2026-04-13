@@ -26,14 +26,31 @@ export function getHighScores() {
     return data.highScores || [];
 }
 
-export function addHighScore(score, grade) {
+export function addHighScore(score, grade, eraId) {
     const data = loadAll();
     if (!data.highScores) data.highScores = [];
-    data.highScores.push({ score, grade, date: Date.now() });
+    data.highScores.push({ score, grade, eraId: eraId || null, date: Date.now() });
     data.highScores.sort((a, b) => b.score - a.score);
-    data.highScores = data.highScores.slice(0, 5); // top 5
+    data.highScores = data.highScores.slice(0, 10); // top 10
     saveAll(data);
+
+    // Also store per-era high score
+    if (eraId) {
+        if (!data.eraHighScores) data.eraHighScores = {};
+        if (!data.eraHighScores[eraId]) data.eraHighScores[eraId] = [];
+        data.eraHighScores[eraId].push({ score, grade, date: Date.now() });
+        data.eraHighScores[eraId].sort((a, b) => b.score - a.score);
+        data.eraHighScores[eraId] = data.eraHighScores[eraId].slice(0, 5);
+        saveAll(data);
+    }
+
     return data.highScores;
+}
+
+export function getEraHighScores(eraId) {
+    const data = loadAll();
+    if (!data.eraHighScores || !data.eraHighScores[eraId]) return [];
+    return data.eraHighScores[eraId];
 }
 
 export function getUnlocks() {
