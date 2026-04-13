@@ -5,7 +5,8 @@
 import { GAME, MARKET_CRASH, TICKER, WAVE_MULTIPLIERS, COLORS } from './constants.js';
 
 export class EventManager {
-    constructor() {
+    constructor(era) {
+        this.era = era || null;
         this.waveIndex = 0;
         this.waveTimer = GAME.WAVE_DURATION;
         this.gameTimer = GAME.DURATION;
@@ -29,6 +30,13 @@ export class EventManager {
         // Wave transition
         this.waveTransitionTimer = 0;
         this.showingWaveBanner = false;
+
+        // Era event system
+        this.eraEventTimer = 0;
+        this.nextEraEventDelay = 20 + Math.random() * 20; // 20-40 seconds
+        this.activeEraEvent = null;
+        this.eraEventBannerTimer = 0;
+        this.eraEventCallback = null; // set by game to handle event effects
     }
 
     update(dt, piles, callbacks) {
@@ -68,12 +76,72 @@ export class EventManager {
         // Market crash logic
         this.updateCrash(dt, piles, callbacks);
 
+        // Era event trigger system
+        this.updateEraEvents(dt, callbacks);
+
+        // Era event banner timer
+        if (this.eraEventBannerTimer > 0) {
+            this.eraEventBannerTimer -= dt;
+            if (this.eraEventBannerTimer <= 0) {
+                this.activeEraEvent = null;
+            }
+        }
+
+        // Era-flavored ticker messages
+        this.updateEraTickerMessages(dt);
+
         // Ticker scroll
         this.updateTicker(dt);
 
         // Process scheduled events
         this.processScheduledEvents(dt, piles);
     }
+
+    updateEraEvents(dt, callbacks) {
+        if (!this.era || !this.era.events || this.era.events.length === 0) return;
+
+        this.eraEventTimer += dt;
+        if (this.eraEventTimer >= this.nextEraEventDelay) {
+            this.eraEventTimer = 0;
+            this.nextEraEventDelay = 20 + Math.random() * 20; // 20-40 seconds
+
+            // Pick a weighted random event
+            const event = this.pickWeightedEvent();
+            if (event) {
+                this.activeEraEvent = event;
+                this.eraEventBannerTimer = 3.0; // show banner for 3 seconds
+
+                // Fire callback to game.js
+                if (callbacks.onEraEvent) {
+                    callbacks.onEraEvent(event);
+                }
+            }
+        }
+    }
+
+    pickWeightedEvent() {
+        const events = this.era.events;
+        const totalWeight = events.reduce((sum, e) => sum + (e.weight || 1), 0);
+        let roll = Math.random() * totalWeight;
+        for (const event of events) {
+            roll -= (event.weight || 1);
+            if (roll <= 0) return event;
+        }
+        return events[events.length - 1];
+    }
+
+    updateEraTickerMessages(dt) {
+        // Periodically inject era-flavored ticker messages
+        if (!this.era || !this.era.tickerMessages) return;
+        // Use a separate timer that fires roughly every 12 seconds
+        if (!this._eraTickerTimer) this._eraTickerTimer = 8 + Math.random() * 8;
+        this._eraTickerTimer -= dt;
+        if (this._eraTickerTimer <= 0) {
+            this._eraTickerTimer = 8 + Math.random() * 8;
+            const msgs = this.era.tickerMessages;
+            const msg = msgs[Math.floor(Math.random() * msgs.length)];
+            this.addTickerMessage(msg, this.era.colors.ACCENT || COLORS.TICKER_TEXT);
+        }
 
     updateCrash(dt, piles, callbacks) {
         if (this.crashTriggered && !this.crashActive && !this.crashWarning) return;

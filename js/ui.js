@@ -2,7 +2,7 @@
 // ui.js - Menu screens, HUD, and end-game UI
 // ============================================================
 
-import { getHighScores } from './storage.js';
+import { getHighScores, getEraHighScores } from './storage.js';
 
 export class UI {
     constructor() {
@@ -37,9 +37,18 @@ export class UI {
         this.pauseScreen.classList.add('hidden');
     }
 
-    showGameOver(scoreData, grade) {
+    showGameOver(scoreData, grade, era) {
         this.gameoverScreen.classList.remove('hidden');
         this.hud.style.display = 'none';
+
+        // Era name
+        const eraNameEl = document.getElementById('gameover-era-name');
+        if (era) {
+            eraNameEl.textContent = era.name + ' (' + era.year + ')';
+            eraNameEl.style.color = era.colors.ACCENT || '';
+        } else {
+            eraNameEl.textContent = '';
+        }
 
         // Grade
         const gradeEl = document.getElementById('grade-display');
@@ -48,6 +57,14 @@ export class UI {
 
         // Final score
         document.getElementById('final-score').textContent = '$' + scoreData.total.toLocaleString();
+
+        // Purchasing power
+        const ppEl = document.getElementById('purchasing-power');
+        if (scoreData.purchasingPower !== undefined) {
+            ppEl.textContent = 'Purchasing Power: $' + scoreData.purchasingPower.toLocaleString();
+        } else {
+            ppEl.textContent = '';
+        }
 
         // Breakdown
         const breakdown = document.getElementById('score-breakdown');
@@ -58,6 +75,20 @@ export class UI {
             Ash collected: <span class="value">+$${scoreData.ashBonus.toLocaleString()}</span><br>
             ${scoreData.noCollapseBonus > 0 ? `No collapse bonus: <span class="value">+$${scoreData.noCollapseBonus.toLocaleString()}</span><br>` : ''}
         `;
+
+        // Era-specific stats
+        const eraStatsEl = document.getElementById('gameover-era-stats');
+        if (scoreData.eventsEncountered && scoreData.eventsEncountered.length > 0) {
+            const timeMins = Math.floor(scoreData.timeSurvived / 60);
+            const timeSecs = Math.floor(scoreData.timeSurvived % 60);
+            let html = `Time survived: ${timeMins}:${timeSecs.toString().padStart(2, '0')}<br>`;
+            html += `Events encountered: ${scoreData.eventsEncountered.length}<br>`;
+            const eventNames = [...new Set(scoreData.eventsEncountered.map(e => e.name))];
+            html += eventNames.join(' / ');
+            eraStatsEl.innerHTML = html;
+        } else {
+            eraStatsEl.innerHTML = '';
+        }
     }
 
     updateHighScores() {
@@ -70,7 +101,8 @@ export class UI {
 
         let html = '<h3>HIGH SCORES</h3>';
         for (const s of scores) {
-            html += `<li>${s.grade} - $${s.score.toLocaleString()}</li>`;
+            const eraLabel = s.eraId ? ` (${s.eraId})` : '';
+            html += `<li>${s.grade} - $${s.score.toLocaleString()}${eraLabel}</li>`;
         }
         container.innerHTML = html;
     }
