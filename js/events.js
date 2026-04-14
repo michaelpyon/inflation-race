@@ -142,6 +142,7 @@ export class EventManager {
             const msg = msgs[Math.floor(Math.random() * msgs.length)];
             this.addTickerMessage(msg, this.era.colors.ACCENT || COLORS.TICKER_TEXT);
         }
+    }
 
     updateCrash(dt, piles, callbacks) {
         if (this.crashTriggered && !this.crashActive && !this.crashWarning) return;
