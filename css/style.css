@@ -2,7 +2,7 @@
    style.css - Inflation Race pixel art game styles
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/* Font loaded via <link> in index.html for non-blocking render */
 
 :root {
     --bg-dark: #000000;
@@ -216,10 +216,16 @@ body {
     transition: border-color 0.15s, background 0.15s, transform 0.1s;
 }
 
-.era-card:hover {
+.era-card:hover,
+.era-card:focus-visible {
     border-color: var(--text-glow);
     background: rgba(29, 43, 83, 0.9);
     transform: scale(1.04);
+    outline: none;
+}
+
+.era-card:focus-visible {
+    box-shadow: 0 0 0 2px var(--text-glow);
 }
 
 .era-card[data-era="great_depression"] { border-color: #D4A55C; }
@@ -263,15 +269,25 @@ body {
     color: var(--text-link);
     cursor: pointer;
     pointer-events: all;
-    padding: 8px 20px;
+    min-height: 44px;
+    padding: 14px 24px;
     border: 1px solid var(--text-link);
     margin-bottom: 12px;
-    transition: background 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
 }
 
-.era-random-btn:hover {
+.era-random-btn:hover,
+.era-random-btn:focus-visible {
     background: var(--text-link);
     color: var(--bg-dark);
+    outline: none;
+}
+
+.era-random-btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--text-glow);
 }
 
 /* Game Over - Era info */
@@ -308,14 +324,24 @@ body {
     color: var(--text-link);
     cursor: pointer;
     pointer-events: all;
-    padding: 8px 16px;
+    min-height: 44px;
+    padding: 14px 20px;
     border: 1px solid var(--text-link);
-    transition: background 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
 }
 
-.gameover-btn:hover {
+.gameover-btn:hover,
+.gameover-btn:focus-visible {
     background: var(--text-link);
     color: var(--bg-dark);
+    outline: none;
+}
+
+.gameover-btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--text-glow);
 }
 
 /* Era Event Banner */
@@ -361,5 +387,47 @@ body {
     #game-container {
         height: 100vh;
         width: calc(100vh * 16 / 9);
+    }
+}
+
+/* Mobile: stack era cards vertically, scale text */
+@media (max-width: 680px) {
+    .era-cards {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin: 12px 0 10px;
+    }
+
+    .era-card {
+        width: 90%;
+        max-width: 280px;
+        padding: 12px 10px;
+    }
+
+    #title-screen h1 {
+        font-size: 18px;
+    }
+
+    #title-screen .subtitle {
+        font-size: 8px;
+        margin-bottom: 16px;
+    }
+
+    .controls-help {
+        font-size: 6px;
+        margin-top: 12px;
+    }
+
+    .gameover-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .gameover-btn {
+        width: 80%;
+        max-width: 260px;
+        justify-content: center;
     }
 }

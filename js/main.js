@@ -42,10 +42,20 @@ function init() {
     requestAnimationFrame(gameLoop);
 }
 
+function activateOnKeyboard(el, handler) {
+    el.addEventListener('click', handler);
+    el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handler();
+        }
+    });
+}
+
 function setupEraSelection() {
     const eraCards = document.querySelectorAll('.era-card');
     eraCards.forEach(card => {
-        card.addEventListener('click', () => {
+        activateOnKeyboard(card, () => {
             resumeAudio();
             const eraId = card.dataset.era;
             const era = getEraById(eraId);
@@ -58,7 +68,7 @@ function setupEraSelection() {
 
     const randomBtn = document.getElementById('random-era-btn');
     if (randomBtn) {
-        randomBtn.addEventListener('click', () => {
+        activateOnKeyboard(randomBtn, () => {
             resumeAudio();
             selectedEra = getRandomEra();
             startGame(selectedEra);
@@ -68,7 +78,7 @@ function setupEraSelection() {
     // Game over buttons
     const retryBtn = document.getElementById('btn-retry');
     if (retryBtn) {
-        retryBtn.addEventListener('click', () => {
+        activateOnKeyboard(retryBtn, () => {
             if (selectedEra) {
                 startGame(selectedEra);
             }
@@ -77,7 +87,7 @@ function setupEraSelection() {
 
     const tryAnotherBtn = document.getElementById('btn-try-another');
     if (tryAnotherBtn) {
-        tryAnotherBtn.addEventListener('click', () => {
+        activateOnKeyboard(tryAnotherBtn, () => {
             state = STATES.TITLE;
             ui.showTitle();
         });
