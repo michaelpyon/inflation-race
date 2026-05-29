@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#000000"/>
+  <rect x="0" y="0" width="1200" height="630" fill="#1D2B53" opacity="0.25"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#FF004D"/>
+  <text x="80" y="230" font-family="'Press Start 2P', monospace" font-size="80" font-weight="400" fill="#FFEC27">INFLATION</text>
+  <text x="80" y="330" font-family="'Press Start 2P', monospace" font-size="80" font-weight="400" fill="#FF004D">RACE</text>
+  <text x="84" y="410" font-family="'Press Start 2P', monospace" font-size="24" font-weight="400" fill="#FFA300">A roguelike about outrunning rising prices</text>
+  <text x="84" y="470" font-family="'Press Start 2P', monospace" font-size="20" font-weight="400" fill="#29ADFF">Depression · Stagflation · Helicopter Money</text>
+  <text x="84" y="586" font-family="'Press Start 2P', monospace" font-size="16" font-weight="400" fill="#5F574F">michaelpyon.com</text>
+</svg>
