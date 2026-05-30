@@ -91,14 +91,15 @@ export class UI {
         }
 
         // Share card
-        this.setupShare(scoreData, era);
+        this.setupShare(scoreData, grade, era);
     }
 
-    setupShare(scoreData, era) {
-        const SHARE_URL = 'inflation-race.vercel.app';
+    setupShare(scoreData, grade, era) {
+        const SHARE_URL = 'https://inflation-race.vercel.app';
         const eraName = era ? era.name : 'the chaos';
         const netWorth = scoreData.total.toLocaleString();
-        const shareText = `I survived ${eraName} with $${netWorth} in Inflation Race - ${SHARE_URL}`;
+        const gradeLabel = grade ? ' [' + grade.grade + ']' : '';
+        const shareText = `Inflation Race${gradeLabel}: survived ${eraName} with $${netWorth} ${SHARE_URL}`;
 
         const previewEl = document.getElementById('share-preview');
         if (previewEl) previewEl.textContent = shareText;
@@ -129,8 +130,8 @@ export class UI {
 
         if (tweetBtn) {
             const handler = () => {
-                const tweetText = `I survived ${eraName} with $${netWorth} in Inflation Race`;
-                const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent('https://' + SHARE_URL)}`;
+                const tweetText = `Inflation Race${gradeLabel}: survived ${eraName} with $${netWorth}`;
+                const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(SHARE_URL)}`;
                 window.open(url, '_blank', 'noopener');
             };
             tweetBtn.onclick = handler;
