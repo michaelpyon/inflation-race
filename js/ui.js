@@ -3,6 +3,7 @@
 // ============================================================
 
 import { getHighScores, getEraHighScores } from './storage.js';
+import { getEraById } from './eras.js';
 
 export class UI {
     constructor() {
@@ -151,7 +152,11 @@ export class UI {
 
         let html = '<h3>HIGH SCORES</h3>';
         for (const s of scores) {
-            const eraLabel = s.eraId ? ` (${s.eraId})` : '';
+            let eraLabel = '';
+            if (s.eraId) {
+                const era = getEraById(s.eraId);
+                eraLabel = era ? ` (${era.name})` : ` (${s.eraId})`;
+            }
             html += `<li>${s.grade} - $${s.score.toLocaleString()}${eraLabel}</li>`;
         }
         container.innerHTML = html;

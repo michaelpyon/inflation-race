@@ -144,7 +144,7 @@ export const ERAS = {
     HELICOPTER_MONEY: {
         id: 'helicopter_money',
         name: 'Helicopter Money',
-        year: '2020-2024',
+        year: '2020-2025',
         tagline: 'Free money. Expensive everything.',
         flavorText: 'Your stimulus arrived. Your landlord raised rent by exactly that amount.',
         modifiers: {
