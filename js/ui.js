@@ -89,6 +89,55 @@ export class UI {
         } else {
             eraStatsEl.innerHTML = '';
         }
+
+        // Share card
+        this.setupShare(scoreData, era);
+    }
+
+    setupShare(scoreData, era) {
+        const SHARE_URL = 'inflation-race.vercel.app';
+        const eraName = era ? era.name : 'the chaos';
+        const netWorth = scoreData.total.toLocaleString();
+        const shareText = `I survived ${eraName} with $${netWorth} in Inflation Race — ${SHARE_URL}`;
+
+        const previewEl = document.getElementById('share-preview');
+        if (previewEl) previewEl.textContent = shareText;
+
+        const copyBtn = document.getElementById('btn-share-copy');
+        const tweetBtn = document.getElementById('btn-share-tweet');
+
+        if (copyBtn) {
+            const handler = () => {
+                const original = copyBtn.textContent;
+                const done = () => {
+                    copyBtn.textContent = 'COPIED';
+                    setTimeout(() => { copyBtn.textContent = original; }, 1800);
+                };
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(shareText).then(done).catch(() => {
+                        window.prompt('Copy your score:', shareText);
+                    });
+                } else {
+                    window.prompt('Copy your score:', shareText);
+                }
+            };
+            copyBtn.onclick = handler;
+            copyBtn.onkeydown = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+            };
+        }
+
+        if (tweetBtn) {
+            const handler = () => {
+                const tweetText = `I survived ${eraName} with $${netWorth} in Inflation Race`;
+                const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent('https://' + SHARE_URL)}`;
+                window.open(url, '_blank', 'noopener');
+            };
+            tweetBtn.onclick = handler;
+            tweetBtn.onkeydown = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+            };
+        }
     }
 
     updateHighScores() {
