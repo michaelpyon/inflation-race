@@ -23,6 +23,20 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Mobile / touch gate: shown on small viewports or touch-only devices -->
+    <div id="mobile-gate" class="hidden">
+        <div class="mobile-gate-inner">
+            <div class="mobile-gate-icon">$</div>
+            <h2 class="mobile-gate-title">INFLATION RACE</h2>
+            <p class="mobile-gate-body">
+                This game runs on a keyboard.<br>
+                Open it on a desktop computer to play.
+            </p>
+            <button id="mobile-gate-copy-btn" class="mobile-gate-btn">COPY LINK</button>
+            <p class="mobile-gate-hint" id="mobile-gate-hint"></p>
+        </div>
+    </div>
+
     <div id="game-container">
         <canvas id="game-canvas"></canvas>
 
@@ -97,6 +111,37 @@
         <!-- HUD (shown during gameplay) -->
         <div id="hud"></div>
     </div>
+
+    <script>
+    // Mobile / touch gate
+    // Show the gate when the viewport is narrow OR the primary pointer is coarse (touch).
+    // A coarse pointer means no physical keyboard is the expected input device.
+    (function () {
+        var gate = document.getElementById('mobile-gate');
+        var copyBtn = document.getElementById('mobile-gate-copy-btn');
+        var hint = document.getElementById('mobile-gate-hint');
+
+        var narrowViewport = window.innerWidth <= 680;
+        var touchPointer = window.matchMedia('(pointer: coarse)').matches;
+
+        if (narrowViewport || touchPointer) {
+            gate.classList.remove('hidden');
+        }
+
+        copyBtn.addEventListener('click', function () {
+            var url = 'https://inflation-race.vercel.app';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function () {
+                    hint.textContent = 'Link copied!';
+                }).catch(function () {
+                    hint.textContent = url;
+                });
+            } else {
+                hint.textContent = url;
+            }
+        });
+    }());
+    </script>
 
     <script type="module" src="js/main.js"></script>
 </body>

@@ -454,6 +454,90 @@ body {
     }
 }
 
+/* ============================================================
+   Mobile / touch gate
+   ============================================================ */
+
+#mobile-gate {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg-dark);
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    text-align: center;
+}
+
+#mobile-gate.hidden {
+    display: none;
+}
+
+.mobile-gate-inner {
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.mobile-gate-icon {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 48px;
+    color: var(--text-glow);
+    text-shadow: 3px 3px 0 var(--accent-shadow);
+    line-height: 1;
+}
+
+.mobile-gate-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: var(--accent);
+    text-shadow: 2px 2px 0 var(--accent-shadow);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.mobile-gate-body {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--text-muted);
+    line-height: 2.2;
+    margin: 0;
+}
+
+.mobile-gate-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--text-link);
+    background: transparent;
+    border: 1px solid var(--text-link);
+    padding: 14px 24px;
+    min-height: 44px;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.mobile-gate-btn:hover,
+.mobile-gate-btn:focus-visible {
+    background: var(--text-link);
+    color: var(--bg-dark);
+    outline: none;
+}
+
+.mobile-gate-hint {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--text-warm);
+    min-height: 14px;
+    margin: 0;
+}
+
+/* ============================================================
+   Mobile: stack era cards vertically, scale text
+   ============================================================ */
+
 /* Mobile: stack era cards vertically, scale text */
 @media (max-width: 680px) {
     .era-cards {
