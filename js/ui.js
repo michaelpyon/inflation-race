@@ -98,7 +98,7 @@ export class UI {
         const SHARE_URL = 'inflation-race.vercel.app';
         const eraName = era ? era.name : 'the chaos';
         const netWorth = scoreData.total.toLocaleString();
-        const shareText = `I survived ${eraName} with $${netWorth} in Inflation Race — ${SHARE_URL}`;
+        const shareText = `I survived ${eraName} with $${netWorth} in Inflation Race - ${SHARE_URL}`;
 
         const previewEl = document.getElementById('share-preview');
         if (previewEl) previewEl.textContent = shareText;
