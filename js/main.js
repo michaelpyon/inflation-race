@@ -66,6 +66,17 @@ function setupEraSelection() {
         });
     });
 
+    // Keyboard shortcuts: press 1, 2, 3 on title screen to pick an era instantly
+    window.addEventListener('keydown', (e) => {
+        if (state !== STATES.TITLE) return;
+        const idx = parseInt(e.key, 10) - 1;
+        if (idx >= 0 && idx < ERA_LIST.length) {
+            resumeAudio();
+            selectedEra = ERA_LIST[idx];
+            startGame(selectedEra);
+        }
+    });
+
     const randomBtn = document.getElementById('random-era-btn');
     if (randomBtn) {
         activateOnKeyboard(randomBtn, () => {

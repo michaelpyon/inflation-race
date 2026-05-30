@@ -263,6 +263,20 @@ body {
     color: var(--text-dim);
 }
 
+.era-key-hint {
+    font-size: 9px;
+    color: var(--text-link);
+    margin-bottom: 6px;
+    opacity: 0.7;
+}
+
+.era-personal-best {
+    font-size: 6px;
+    color: var(--text-glow);
+    margin-top: 8px;
+    min-height: 10px;
+}
+
 .era-random-btn {
     font-family: 'Press Start 2P', monospace;
     font-size: 9px;

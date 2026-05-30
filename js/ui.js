@@ -3,7 +3,7 @@
 // ============================================================
 
 import { getHighScores, getEraHighScores } from './storage.js';
-import { getEraById } from './eras.js';
+import { getEraById, ERA_LIST } from './eras.js';
 
 export class UI {
     constructor() {
@@ -19,8 +19,9 @@ export class UI {
         this.gameoverScreen.classList.add('hidden');
         this.hud.style.display = 'none';
 
-        // Show high scores
+        // Show high scores and per-era personal bests
         this.updateHighScores();
+        this.updateEraPersonalBests();
     }
 
     showGame() {
@@ -160,5 +161,19 @@ export class UI {
             html += `<li>${s.grade} - $${s.score.toLocaleString()}${eraLabel}</li>`;
         }
         container.innerHTML = html;
+    }
+
+    updateEraPersonalBests() {
+        for (const era of ERA_LIST) {
+            const el = document.getElementById('pb-' + era.id);
+            if (!el) continue;
+            const scores = getEraHighScores(era.id);
+            if (scores.length === 0) {
+                el.textContent = '';
+            } else {
+                const best = scores[0];
+                el.textContent = 'BEST: ' + best.grade + ' $' + best.score.toLocaleString();
+            }
+        }
     }
 }

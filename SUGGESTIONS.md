@@ -1,5 +1,10 @@
 # Inflation Race - Suggestions
 
+## Shipped Wave 2
+
+- Keyboard shortcuts 1/2/3 on title screen to instantly pick an era (js/main.js, index.html controls-help updated).
+- Per-era personal best badge on each era card: shows "BEST: A $14,200" pulled from localStorage so players see their replay target instantly (js/ui.js updateEraPersonalBests, index.html pb- anchors, css/style.css new .era-key-hint and .era-personal-best rules).
+
 ## Evangelist Persona
 
 The ideal evangelist is a 28-35 year old who posts in r/personalfinance, r/financialindependence, or r/antiwork. They are economically anxious, use Twitter/X habitually, and enjoy games that validate their frustrations. They currently scroll Twitter and share memes about rent prices and student debt. They screenshot the end screen when they get a high grade (A or S) because it is a brag they can frame as a joke ("I survived Stagflation with $11,200 [A] - me in real life rn"). They bounce in 5 seconds if the game does nothing on load (no instructions pop, no immediate feedback) or if they are on a phone and see a blank canvas. The "COPY SCORE" share flow with the grade letter in the text is the single share trigger. The mobile gate added in the prior pass prevents the worst silent-failure case for this audience.
@@ -28,15 +33,15 @@ All fixes are in repo HEAD; the next Vercel deploy will flush them live.
 
 ### Quick Wins (S = small, no rebuild needed)
 
-1. **[DONE this pass] Fix high score era labels** (js/ui.js). Shows raw IDs like `great_depression` to the player. Now resolves to `The Great Depression` etc. via `getEraById`. Effort S. No deploy needed to verify logic (no build).
+1. **[DONE wave 1] Fix high score era labels** (js/ui.js). Shows raw IDs like `great_depression` to the player. Now resolves to `The Great Depression` etc. via `getEraById`. Effort S. No deploy needed to verify logic (no build).
 
-2. **[DONE this pass] Fix year inconsistency** (js/eras.js). `2020-2024` in eras.js but `2020-2025` on the title card. Aligned to `2020-2025`. Effort S.
+2. **[DONE wave 1] Fix year inconsistency** (js/eras.js). `2020-2024` in eras.js but `2020-2025` on the title card. Aligned to `2020-2025`. Effort S.
 
 3. **[NEEDED] Deploy.** All prior-pass fixes (mobile gate, https:// share, grade in share) are in HEAD but not live. The single highest-ROI action is flushing a Vercel deploy. Flag: deploy-mismatch.
 
-4. **Per-era personal best on title screen** (js/ui.js, js/storage.js). `updateHighScores` currently shows a global top-10 list. Showing per-era personal bests (already stored in localStorage as `eraHighScores`) gives the replay hook: "I got B on Stagflation, let me beat it." Effort S-M. No deploy needed to logic-check.
+4. **[DONE wave 2] Per-era personal best on title screen** (js/ui.js, index.html, css/style.css). Each era card now shows the player's personal best grade and score for that era (from localStorage `eraHighScores`). Gives the replay hook: "I got B on Stagflation, let me beat it." Also added key-hint badges (1/2/3) on each card.
 
-5. **Keyboard shortcut for era selection on title screen** (js/input.js, js/main.js). Player can press 1/2/3 to instantly pick an era. Saves 3 click-actions on retry. Effort S.
+5. **[DONE wave 2] Keyboard shortcut for era selection on title screen** (js/main.js, index.html). Player can press 1/2/3 to instantly pick an era. Added hint in controls-help and key-hint badges on era cards. Effort S.
 
 6. **Post-run hint line** (js/ui.js). After game over, one context-sensitive line like "Tip: firebreak your lowest-burn pile first" based on what happened. Drives replay understanding. Effort M.
 
