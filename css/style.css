@@ -33,6 +33,10 @@ body {
     font-family: 'Press Start 2P', monospace;
 }
 
+button {
+    touch-action: manipulation;
+}
+
 #game-container {
     position: relative;
     width: 1536px;
