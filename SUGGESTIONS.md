@@ -22,12 +22,12 @@ The ideal evangelist is a 28-35 year old who posts in r/personalfinance, r/finan
 
 ### Live Site (https://inflation-race.vercel.app)
 
-DEPLOY MISMATCH. The live site serves the old pre-fix build:
-- No mobile gate (the `mobile-gate` div and inline JS are absent from the live HTML).
-- Share text still reads `I survived ${eraName} with $${netWorth} in Inflation Race - inflation-race.vercel.app` (no https://, no grade letter).
-- `setupShare` still only takes `(scoreData, era)` not `(scoreData, grade, era)`.
-
-All fixes are in repo HEAD; the next Vercel deploy will flush them live.
+DEPLOY MATCHES THE AAA RELEASE. Product commit `bfaa1f0` is live as Vercel deployment `dpl_EbRHjAj8AB1EUDNaV3mEWmxjzXok`:
+- The branded mobile keyboard gate and COPY LINK fallback are live.
+- Share text includes the grade, human era name, score, and full stable URL.
+- The result screen self-attributes with the INFLATION RACE wordmark and selected era color.
+- Metadata and the 1200x630 social image call it an arcade game, not a roguelike.
+- All 18 public runtime files match the gated build byte for byte. Internal markdown, Claude, Stitch, and gstack QA paths return 404.
 
 ## Prioritized Plan
 
@@ -37,7 +37,7 @@ All fixes are in repo HEAD; the next Vercel deploy will flush them live.
 
 2. **[DONE wave 1] Fix year inconsistency** (js/eras.js). `2020-2024` in eras.js but `2020-2025` on the title card. Aligned to `2020-2025`. Effort S.
 
-3. **[NEEDED] Deploy.** All prior-pass fixes (mobile gate, https:// share, grade in share) are in HEAD but not live. The single highest-ROI action is flushing a Vercel deploy. Flag: deploy-mismatch.
+3. **[DONE AAA release] Deploy.** Mobile gating, stable-URL sharing, grade attribution, truthful metadata, social art, and the result-card polish are live and independently verified.
 
 4. **[DONE wave 2] Per-era personal best on title screen** (js/ui.js, index.html, css/style.css). Each era card now shows the player's personal best grade and score for that era (from localStorage `eraHighScores`). Gives the replay hook: "I got B on Stagflation, let me beat it." Also added key-hint badges (1/2/3) on each card.
 

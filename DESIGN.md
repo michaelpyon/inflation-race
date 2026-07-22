@@ -61,6 +61,7 @@ The product does **not** claim real data, and that is currently true: no fetch c
 
 ## Ship notes for execution agents
 
-- HEAD contains fixes (mobile gate, grade-in-share-text, era label names, 1/2/3 hotkeys, per-era bests) that are NOT on the live deploy; the highest-ROI single action at execution time is flushing a deploy (Michael triggers deploys; do not deploy from a planning or build agent without approval).
-- Carried-forward bets in priority order: era-tinted game-over palette (S-M), touch controls to remove the mobile gate (4-6h, unlocks mobile), dynamic OG (L), KV leaderboard (L, needs Michael to provision).
+- The AAA release is live at https://inflation-race.vercel.app from product commit `bfaa1f0` and Vercel deployment `dpl_EbRHjAj8AB1EUDNaV3mEWmxjzXok`. Mobile gating, grade-in-share text, human era labels, 1/2/3 hotkeys, per-era bests, truthful arcade metadata, and the attributed grade card are all in production.
+- `.vercelignore` is a release boundary. Do not remove the `.gstack/`, `.claude/`, `.stitch/`, or internal markdown exclusions. The AAA gate caught a generated gstack terminal token before deploy; every private-path public probe now returns 404.
+- The era-tinted game-over treatment is shipped. Remaining bets in priority order: touch controls to remove the mobile gate (4-6h, unlocks mobile), dynamic OG (L), KV leaderboard (L, needs Michael to provision).
 - No package.json; keep it that way. Test with any static server (python3 -m http.server).
