@@ -1,0 +1,11 @@
+.claude/
+.gstack/
+.stitch/
+.vercel/
+.DS_Store
+.gitignore
+.vercelignore
+PERSONA.md
+BRAND.md
+DESIGN.md
+SUGGESTIONS.md

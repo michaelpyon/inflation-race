@@ -48,8 +48,10 @@ export class UI {
         if (era) {
             eraNameEl.textContent = era.name + ' (' + era.year + ')';
             eraNameEl.style.color = era.colors.ACCENT || '';
+            this.gameoverScreen.style.setProperty('--era-accent', era.colors.ACCENT || '#FFEC27');
         } else {
             eraNameEl.textContent = '';
+            this.gameoverScreen.style.removeProperty('--era-accent');
         }
 
         // Grade
@@ -147,7 +149,7 @@ export class UI {
         const scores = getHighScores();
         const container = document.getElementById('high-scores-display');
         if (scores.length === 0) {
-            container.innerHTML = '';
+            container.innerHTML = '<div class="high-scores-empty">NO SURVIVORS YET</div>';
             return;
         }
 

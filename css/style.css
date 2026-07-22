@@ -5,7 +5,7 @@
 /* Font loaded via <link> in index.html for non-blocking render */
 
 :root {
-    --bg-dark: #000000;
+    --bg-dark: #050509;
     --text-primary: #FFF1E8;
     --text-glow: #FFEC27;
     --accent: #FF004D;
@@ -28,7 +28,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
     font-family: 'Press Start 2P', monospace;
 }
@@ -42,7 +42,7 @@ button {
     width: 1536px;
     height: 864px;
     max-width: 100vw;
-    max-height: 100vh;
+    max-height: 100dvh;
     aspect-ratio: 16 / 9;
 }
 
@@ -127,18 +127,37 @@ button {
 
 /* Game over screen */
 #gameover-screen {
-    background: rgba(0, 0, 0, 0.9);
+    --era-accent: var(--text-glow);
+    background: rgba(5, 5, 9, 0.94);
+    border: 4px solid var(--era-accent);
+    box-shadow: inset 0 0 0 4px var(--bg-dark);
 }
 
 #gameover-screen h2 {
-    font-size: 20px;
-    margin-bottom: 20px;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.gameover-wordmark {
+    color: var(--text-glow);
+    font-size: 10px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
 }
 
 .grade-display {
-    font-size: 48px;
-    margin: 10px 0;
+    font-size: clamp(64px, 7vw, 96px);
+    line-height: 1;
+    margin: 6px 0;
     text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+    animation: grade-slam 220ms steps(2, end) both;
+}
+
+@keyframes grade-slam {
+    0% { opacity: 0; transform: scale(1.55); }
+    60% { opacity: 1; transform: scale(0.94); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .score-breakdown {
@@ -198,6 +217,11 @@ button {
 .high-scores li {
     list-style: none;
     margin: 4px 0;
+}
+
+.high-scores-empty {
+    color: var(--text-dim);
+    letter-spacing: 1px;
 }
 
 /* Era Selection Cards */
@@ -467,8 +491,8 @@ button {
 
 @media (max-height: 864px) {
     #game-container {
-        height: 100vh;
-        width: calc(100vh * 16 / 9);
+        height: 100dvh;
+        width: calc(100dvh * 16 / 9);
     }
 }
 
@@ -595,5 +619,13 @@ button {
         width: 80%;
         max-width: 260px;
         justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .grade-display,
+    .start-prompt,
+    #pause-screen h2 {
+        animation: none;
     }
 }
